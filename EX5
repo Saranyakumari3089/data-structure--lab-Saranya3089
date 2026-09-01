@@ -1,0 +1,133 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct infixpriority
+{
+    char ope;
+    int pri;
+};
+
+struct stackpriority
+{
+    char ope;
+    int pri;
+};
+
+struct infixpriority ip[] =
+{
+    {'*', 2},
+    {'/', 2},
+    {'+', 1},
+    {'-', 1},
+    {'(', 3},
+    {')', 0},
+    {'#', 0}
+};
+
+struct stackpriority sp[] =
+{
+    {'*', 2},
+    {'/', 2},
+    {'+', 1},
+    {'-', 1},
+    {'(', 0},
+    {')', 0},
+    {'#', 0}
+};
+
+int getInfixPriority(char ch)
+{
+    int i;
+
+    for (i = 0; i < 7; i++)
+    {
+        if (ip[i].ope == ch)
+            return ip[i].pri;
+    }
+
+    return -1;
+}
+
+int getStackPriority(char ch)
+{
+    int i;
+
+    for (i = 0; i < 7; i++)
+    {
+        if (sp[i].ope == ch)
+            return sp[i].pri;
+    }
+
+    return -1;
+}
+
+int main()
+{
+    int n, top = -1, j = 0;
+    char stack[50], c;
+    char infixex[50], postfix[50];
+
+    printf("Enter the infix expression\n");
+    scanf("%49s", infixex);
+
+    n = strlen(infixex);
+    infixex[n] = '#';
+    infixex[n + 1] = '\0';
+
+    stack[++top] = '#';
+
+    for (int k = 0; k <= n; k++)
+    {
+        c = infixex[k];
+
+        if (c == ')')
+        {
+            while (top >= 0 && stack[top] != '(')
+            {
+                postfix[j++] = stack[top--];
+            }
+
+            if (top >= 0 && stack[top] == '(')
+                top--;
+        }
+        else if (c == '#')
+        {
+            while (top >= 0 && stack[top] != '#')
+            {
+                postfix[j++] = stack[top--];
+            }
+        }
+        else if (c == '*' || c == '/' ||
+                 c == '+' || c == '-' || c == '(')
+        {
+            int ipc = getInfixPriority(c);
+
+            while (top >= 0 &&
+                   stack[top] != '#' &&
+                   getStackPriority(stack[top]) >= ipc)
+            {
+                postfix[j++] = stack[top--];
+            }
+
+            stack[++top] = c;
+        }
+        else
+        {
+            postfix[j++] = c;
+        }
+    }
+
+    postfix[j] = '\0';
+
+    printf("The resultant postfix expression is %s\n", postfix);
+
+    return 0;
+}
+
+
+
+Output
+Enter the infix expression
+a+b*c
+The resultant postfix expression is abc*+
