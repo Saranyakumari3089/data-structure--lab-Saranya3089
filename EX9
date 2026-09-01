@@ -1,0 +1,217 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int h[20];
+int n = 0;
+
+void insert(int);
+void delete1(void);
+void print(void);
+
+int main()
+{
+    int ch, x;
+
+    while (1)
+    {
+        printf("\n1.Insertion  2.Deletion  3.Print  4.Exit\n");
+        printf("Enter the choice\n");
+        scanf("%d", &ch);
+
+        switch (ch)
+        {
+            case 1:
+                if (n == 19)
+                {
+                    printf("Heap is full\n");
+                    break;
+                }
+
+                printf("Enter the element to be inserted\n");
+                scanf("%d", &x);
+
+                printf("Before Insertion\n");
+                print();
+
+                insert(x);
+
+                printf("After Insertion\n");
+                print();
+                break;
+
+            case 2:
+                if (n == 0)
+                {
+                    printf("Heap is empty\n");
+                    break;
+                }
+
+                printf("Before Deletion\n");
+                print();
+
+                delete1();
+
+                printf("After Deletion\n");
+                print();
+                break;
+
+            case 3:
+                printf("The elements of the heap\n");
+                print();
+                break;
+
+            case 4:
+                exit(0);
+
+            default:
+                printf("Invalid choice\n");
+        }
+    }
+
+    return 0;
+}
+
+void insert(int x)
+{
+    int i;
+
+    n++;
+
+    for (i = n; i > 1; i = i / 2)
+    {
+        if (h[i / 2] <= x)
+            break;
+
+        h[i] = h[i / 2];
+    }
+
+    h[i] = x;
+}
+
+void delete1(void)
+{
+    int i, c, del, x;
+
+    del = h[1];
+    x = h[n];
+    n--;
+
+    for (i = 1; i * 2 <= n; i = c)
+    {
+        c = 2 * i;
+
+        if (c < n && h[c] > h[c + 1])
+            c++;
+
+        if (x <= h[c])
+            break;
+
+        h[i] = h[c];
+    }
+
+    if (n > 0)
+        h[i] = x;
+
+    printf("The deleted element is %d\n", del);
+}
+
+void print(void)
+{
+    int i;
+
+    for (i = 1; i <= n; i++)
+    {
+        printf("%d\t", h[i]);
+    }
+
+    printf("\n");
+}
+
+
+
+
+Output
+1.Insertion  2.Deletion  3.Print  4.Exit
+Enter the choice
+1
+Enter the element to be inserted
+10
+Before Insertion
+
+After Insertion
+10
+
+1.Insertion  2.Deletion  3.Print  4.Exit
+Enter the choice
+1
+Enter the element to be inserted
+5
+Before Insertion
+10
+After Insertion
+5	10
+
+1.Insertion  2.Deletion  3.Print  4.Exit
+Enter the choice
+2
+Before Deletion
+5	10
+The deleted element is 5
+After Deletion
+10
+
+1.Insertion  2.Deletion  3.Print  4.Exit
+Enter the choice
+2
+Before Deletion
+10
+The deleted element is 10
+After Deletion
+
+
+1.Insertion  2.Deletion  3.Print  4.Exit
+Enter the choice
+1
+Enter the element to be inserted
+15
+Before Insertion
+
+After Insertion
+15
+
+1.Insertion  2.Deletion  3.Print  4.Exit
+Enter the choice
+1
+Enter the element to be inserted
+20
+Before Insertion
+15
+After Insertion
+15	20
+
+1.Insertion  2.Deletion  3.Print  4.Exit
+Enter the choice
+1
+Enter the element to be inserted
+12
+Before Insertion
+15	20
+After Insertion
+12	20	15
+
+1.Insertion  2.Deletion  3.Print  4.Exit
+Enter the choice
+2
+Before Deletion
+12	20	15
+The deleted element is 12
+After Deletion
+15	20
+
+1.Insertion  2.Deletion  3.Print  4.Exit
+Enter the choice
+4
+
+
+
+Chat
