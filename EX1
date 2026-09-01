@@ -160,7 +160,9 @@ void display()
     printf("\n");
 }
 
-Sample Output
+
+
+Output
 Enter the number of elements in the list
 3
 Enter the element for array : 10
