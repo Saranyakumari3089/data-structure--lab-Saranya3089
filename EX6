@@ -1,0 +1,230 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int cqueue[5] = {-1, -1, -1, -1, -1};
+int rear = -1;
+int front = 0;
+
+void enqueue(int);
+void dequeue(void);
+void print(void);
+
+int main()
+{
+    int ch, x;
+
+    while (1)
+    {
+        printf("\n1.Enqueue\t2.Dequeue\t3.Print Queue\t4.Exit\n");
+        printf("Enter your Choice\n");
+        scanf("%d", &ch);
+
+        switch (ch)
+        {
+            case 1:
+                printf("Enter the element to be inserted\n");
+                scanf("%d", &x);
+                printf("Before Enqueue-");
+                print();
+                enqueue(x);
+                break;
+
+            case 2:
+                printf("Before Dequeue-");
+                print();
+                dequeue();
+                break;
+
+            case 3:
+                print();
+                break;
+
+            case 4:
+                exit(0);
+
+            default:
+                printf("Invalid choice\n");
+        }
+    }
+
+    return 0;
+}
+
+void enqueue(int x)
+{
+    int nextRear = (rear + 1) % 5;
+
+    if (nextRear == front && cqueue[front] != -1)
+    {
+        printf("\nQueue is full\n");
+        return;
+    }
+
+    rear = nextRear;
+    cqueue[rear] = x;
+
+    printf("\nAfter Enqueue- rear = %d\n", rear);
+    print();
+}
+
+void dequeue(void)
+{
+    int del;
+
+    if (cqueue[front] == -1)
+    {
+        printf("\nCircular queue is empty\n");
+        return;
+    }
+
+    del = cqueue[front];
+    cqueue[front] = -1;
+    front = (front + 1) % 5;
+
+    if (front == (rear + 1) % 5)
+    {
+        rear = front - 1;
+        if (rear < 0)
+            rear = 4;
+    }
+
+    printf("\nThe deleted item is %d\n", del);
+    printf("After Dequeue front = %d\n", front);
+    print();
+}
+
+void print(void)
+{
+    int i;
+
+    printf("\nQueue Contents are\n");
+
+    if (cqueue[front] == -1)
+    {
+        printf("Empty\n");
+        return;
+    }
+
+    i = front;
+
+    while (1)
+    {
+        printf("%d\t", cqueue[i]);
+
+        if (i == rear)
+            break;
+
+        i = (i + 1) % 5;
+    }
+
+    printf("\n");
+}
+
+
+Output
+1.Enqueue	2.Dequeue	3.Print Queue	4.Exit
+Enter your Choice
+1
+Enter the element to be inserted
+10
+Before Enqueue-
+Queue Contents are
+Empty
+
+After Enqueue- rear = 0
+Queue Contents are
+10
+
+1.Enqueue	2.Dequeue	3.Print Queue	4.Exit
+Enter your Choice
+1
+Enter the element to be inserted
+20
+Before Enqueue-
+Queue Contents are
+10
+
+After Enqueue- rear = 1
+Queue Contents are
+10	20
+
+1.Enqueue	2.Dequeue	3.Print Queue	4.Exit
+Enter your Choice
+1
+Enter the element to be inserted
+30
+Before Enqueue-
+Queue Contents are
+10	20
+
+After Enqueue- rear = 2
+Queue Contents are
+10	20	30
+
+1.Enqueue	2.Dequeue	3.Print Queue	4.Exit
+Enter your Choice
+2
+Before Dequeue-
+Queue Contents are
+10	20	30
+
+The deleted item is 10
+After Dequeue front = 1
+
+Queue Contents are
+20	30
+
+1.Enqueue	2.Dequeue	3.Print Queue	4.Exit
+Enter your Choice
+1
+Enter the element to be inserted
+40
+Before Enqueue-
+Queue Contents are
+20	30
+
+After Enqueue- rear = 3
+Queue Contents are
+20	30	40
+
+1.Enqueue	2.Dequeue	3.Print Queue	4.Exit
+Enter your Choice
+1
+Enter the element to be inserted
+50
+Before Enqueue-
+Queue Contents are
+20	30	40
+
+After Enqueue- rear = 4
+Queue Contents are
+20	30	40	50
+
+1.Enqueue	2.Dequeue	3.Print Queue	4.Exit
+Enter your Choice
+1
+Enter the element to be inserted
+60
+Before Enqueue-
+Queue Contents are
+20	30	40	50
+
+After Enqueue- rear = 0
+Queue Contents are
+20	30	40	50	60
+
+1.Enqueue	2.Dequeue	3.Print Queue	4.Exit
+Enter your Choice
+2
+Before Dequeue-
+Queue Contents are
+20	30	40	50	60
+
+The deleted item is 20
+After Dequeue front = 2
+
+Queue Contents are
+30	40	50	60
+
+
+
