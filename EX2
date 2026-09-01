@@ -1,0 +1,305 @@
+ChatGPT said:
+Sure. Here is the clean, corrected, GitHub-ready version of the linked-list program, followed by the sample output.
+
+Singly Linked List using Header Node
+SinglyLinkedList.c
+#include <stdio.h>
+#include <stdlib.h>
+
+struct snode
+{
+    int data;
+    struct snode *next;
+};
+
+void insertion(struct snode *, int, int);
+void deletion(struct snode *, int);
+struct snode *find(struct snode *, int);
+struct snode *findprevious(struct snode *, int);
+void print(struct snode *);
+
+int main()
+{
+    struct snode *head, *p;
+    int ch, x, m;
+
+    /* Creation of header node */
+    head = (struct snode *)malloc(sizeof(struct snode));
+
+    head->data = -1;
+    head->next = NULL;
+
+    while (1)
+    {
+        printf("\n1.Insertion 2.Deletion 3.Find 4.Find Previous 5.Print 6.Exit\n");
+        printf("Enter the choice for operations\n");
+        scanf("%d", &ch);
+
+        switch (ch)
+        {
+            case 1:
+                printf("Enter the element to be inserted\n");
+                scanf("%d", &x);
+
+                printf("Enter the element after which new element is to be inserted\n");
+                scanf("%d", &m);
+
+                printf("Before Insertion\n");
+                print(head);
+
+                insertion(head, x, m);
+
+                printf("After Insertion\n");
+                print(head);
+                break;
+
+            case 2:
+                printf("Enter the element to be deleted\n");
+                scanf("%d", &x);
+
+                printf("Before Deletion\n");
+                print(head);
+
+                deletion(head, x);
+
+                printf("After Deletion\n");
+                print(head);
+                break;
+
+            case 3:
+                printf("Enter the element to be searched\n");
+                scanf("%d", &x);
+
+                p = find(head, x);
+
+                if (p != NULL)
+                    printf("The element is present at the address %p\n",
+                           (void *)p);
+                else
+                    printf("The element is not present\n");
+
+                break;
+
+            case 4:
+                printf("Enter the element to be searched\n");
+                scanf("%d", &x);
+
+                p = findprevious(head, x);
+
+                if (p != NULL)
+                    printf("The previous snode address of the element is %p\n",
+                           (void *)p);
+                else
+                    printf("The element is not present\n");
+
+                break;
+
+            case 5:
+                printf("The elements in the linked list are\n");
+                print(head);
+                break;
+
+            case 6:
+                free(head);
+                exit(0);
+
+            default:
+                printf("Invalid choice\n");
+        }
+    }
+
+    return 0;
+}
+
+void insertion(struct snode *head, int x, int m)
+{
+    struct snode *newnode, *p;
+
+    newnode = (struct snode *)malloc(sizeof(struct snode));
+
+    if (newnode == NULL)
+    {
+        printf("Memory allocation failed\n");
+        return;
+    }
+
+    newnode->data = x;
+
+    /* Insert at beginning */
+    if (m == -1)
+    {
+        newnode->next = head->next;
+        head->next = newnode;
+    }
+    else
+    {
+        p = head->next;
+
+        while (p != NULL)
+        {
+            if (m == p->data)
+            {
+                newnode->next = p->next;
+                p->next = newnode;
+                return;
+            }
+
+            p = p->next;
+        }
+
+        printf("Element %d not found. Insertion not possible.\n", m);
+        free(newnode);
+    }
+}
+
+void deletion(struct snode *head, int x)
+{
+    struct snode *p, *pre;
+
+    pre = head;
+    p = head->next;
+
+    while (p != NULL)
+    {
+        if (x == p->data)
+        {
+            pre->next = p->next;
+            free(p);
+            return;
+        }
+        else
+        {
+            pre = p;
+            p = p->next;
+        }
+    }
+
+    printf("Element %d not found.\n", x);
+}
+
+struct snode *find(struct snode *head, int x)
+{
+    struct snode *p;
+
+    p = head->next;
+
+    while (p != NULL)
+    {
+        if (x == p->data)
+            return p;
+
+        p = p->next;
+    }
+
+    return NULL;
+}
+
+struct snode *findprevious(struct snode *head, int x)
+{
+    struct snode *p, *pre;
+
+    pre = head;
+    p = head->next;
+
+    while (p != NULL)
+    {
+        if (x == p->data)
+            return pre;
+
+        pre = p;
+        p = p->next;
+    }
+
+    return NULL;
+}
+
+void print(struct snode *head)
+{
+    struct snode *p;
+
+    p = head;
+
+    while (p != NULL)
+    {
+        printf("%d-->", p->data);
+        p = p->next;
+    }
+
+    printf("\n");
+}
+
+ Output
+
+1.Insertion 2.Deletion 3.Find 4.Find Previous 5.Print 6.Exit
+Enter the choice for operations
+1
+Enter the element to be inserted
+10
+Enter the element after which new element is to be inserted
+-1
+Before Insertion
+-1-->
+After Insertion
+-1-->10-->
+
+1.Insertion 2.Deletion 3.Find 4.Find Previous 5.Print 6.Exit
+Enter the choice for operations
+1
+Enter the element to be inserted
+5
+Enter the element after which new element is to be inserted
+-1
+Before Insertion
+-1-->10-->
+After Insertion
+-1-->5-->10-->
+
+1.Insertion 2.Deletion 3.Find 4.Find Previous 5.Print 6.Exit
+Enter the choice for operations
+1
+Enter the element to be inserted
+20
+Enter the element after which new element is to be inserted
+10
+Before Insertion
+-1-->5-->10-->
+After Insertion
+-1-->5-->10-->20-->
+
+1.Insertion 2.Deletion 3.Find 4.Find Previous 5.Print 6.Exit
+Enter the choice for operations
+2
+Enter the element to be deleted
+5
+Before Deletion
+-1-->5-->10-->20-->
+After Deletion
+-1-->10-->20-->
+
+1.Insertion 2.Deletion 3.Find 4.Find Previous 5.Print 6.Exit
+Enter the choice for operations
+2
+Enter the element to be deleted
+20
+Before Deletion
+-1-->10-->20-->
+After Deletion
+-1-->10-->
+
+1.Insertion 2.Deletion 3.Find 4.Find Previous 5.Print 6.Exit
+Enter the choice for operations
+3
+Enter the element to be searched
+10
+The element is present at the address 0x55a8b2c4f2c0
+
+1.Insertion 2.Deletion 3.Find 4.Find Previous 5.Print 6.Exit
+Enter the choice for operations
+4
+Enter the element to be searched
+10
+The previous snode address of the element is 0x55a8b2c4f2a0
+
+1.Insertion 2.Deletion 3.Find 4.Find Previous 5.Print 6.Exit
+Enter the choice for operations
+6
