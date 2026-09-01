@@ -1,0 +1,258 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct dnode
+{
+    int data;
+    struct dnode *next;
+    struct dnode *prev;
+};
+
+void insertion(struct dnode *, int, int);
+void deletion(struct dnode *, int);
+struct dnode *find(struct dnode *, int);
+void print(struct dnode *);
+
+int main()
+{
+    struct dnode *head, *p;
+    int ch, x, m;
+
+    head = (struct dnode *)malloc(sizeof(struct dnode));
+
+    head->data = -1;
+    head->prev = NULL;
+    head->next = NULL;
+
+    while (1)
+    {
+        printf("\n1.Insertion 2.Deletion 3.Find 4.Print 5.Exit\n");
+        printf("Enter the choice for operations\n");
+        scanf("%d", &ch);
+
+        switch (ch)
+        {
+            case 1:
+                printf("Enter the element to be inserted\n");
+                scanf("%d", &x);
+
+                printf("Enter the element after which new to be inserted\n");
+                scanf("%d", &m);
+
+                printf("\nBefore Insertion\n");
+                print(head);
+
+                insertion(head, x, m);
+
+                printf("After Insertion\n");
+                print(head);
+                break;
+
+            case 2:
+                printf("Enter the element to be deleted\n");
+                scanf("%d", &x);
+
+                printf("\nBefore Deletion\n");
+                print(head);
+
+                deletion(head, x);
+
+                printf("After Deletion\n");
+                print(head);
+                break;
+
+            case 3:
+                printf("Enter the element to be searched\n");
+                scanf("%d", &x);
+
+                p = find(head, x);
+
+                if (p != NULL)
+                    printf("The element is present in the list\n");
+                else
+                    printf("The element is not present\n");
+                break;
+
+            case 4:
+                printf("The elements in the linked list are\n");
+                print(head);
+                break;
+
+            case 5:
+                free(head);
+                return 0;
+
+            default:
+                printf("Invalid choice\n");
+        }
+    }
+}
+
+void insertion(struct dnode *head, int x, int m)
+{
+    struct dnode *newnode, *p, *q;
+
+    newnode = (struct dnode *)malloc(sizeof(struct dnode));
+    newnode->data = x;
+
+    if (m == -1)
+    {
+        newnode->next = head->next;
+        newnode->prev = head;
+
+        if (head->next != NULL)
+            head->next->prev = newnode;
+
+        head->next = newnode;
+    }
+    else
+    {
+        p = head->next;
+
+        while (p != NULL)
+        {
+            if (p->data == m)
+            {
+                q = p->next;
+
+                newnode->next = q;
+                newnode->prev = p;
+
+                p->next = newnode;
+
+                if (q != NULL)
+                    q->prev = newnode;
+
+                return;
+            }
+
+            p = p->next;
+        }
+
+        printf("Element not found\n");
+        free(newnode);
+    }
+}
+
+void deletion(struct dnode *head, int x)
+{
+    struct dnode *p;
+
+    p = head->next;
+
+    while (p != NULL)
+    {
+        if (p->data == x)
+        {
+            p->prev->next = p->next;
+
+            if (p->next != NULL)
+                p->next->prev = p->prev;
+
+            free(p);
+            return;
+        }
+
+        p = p->next;
+    }
+
+    printf("Element not found\n");
+}
+
+struct dnode *find(struct dnode *head, int x)
+{
+    struct dnode *p;
+
+    p = head->next;
+
+    while (p != NULL)
+    {
+        if (p->data == x)
+            return p;
+
+        p = p->next;
+    }
+
+    return NULL;
+}
+
+void print(struct dnode *head)
+{
+    struct dnode *p;
+
+    p = head;
+
+    while (p != NULL)
+    {
+        printf("%d-->", p->data);
+        p = p->next;
+    }
+
+    printf("\n");
+}
+
+Output
+1.Insertion 2.Deletion 3.Find 4.Print 5.Exit
+Enter the choice for operations
+1
+Enter the element to be inserted
+10
+Enter the element after which new to be inserted
+-1
+
+Before Insertion
+-1-->
+After Insertion
+-1-->10-->
+
+1.Insertion 2.Deletion 3.Find 4.Print 5.Exit
+Enter the choice for operations
+1
+Enter the element to be inserted
+20
+Enter the element after which new to be inserted
+10
+
+Before Insertion
+-1-->10-->
+After Insertion
+-1-->10-->20-->
+
+1.Insertion 2.Deletion 3.Find 4.Print 5.Exit
+Enter the choice for operations
+1
+Enter the element to be inserted
+30
+Enter the element after which new to be inserted
+10
+
+Before Insertion
+-1-->10-->20-->
+After Insertion
+-1-->10-->30-->20-->
+
+1.Insertion 2.Deletion 3.Find 4.Print 5.Exit
+Enter the choice for operations
+2
+Enter the element to be deleted
+20
+
+Before Deletion
+-1-->10-->30-->20-->
+After Deletion
+-1-->10-->30-->
+
+1.Insertion 2.Deletion 3.Find 4.Print 5.Exit
+Enter the choice for operations
+2
+Enter the element to be deleted
+10
+
+Before Deletion
+-1-->10-->30-->
+After Deletion
+-1-->30-->
+
+1.Insertion 2.Deletion 3.Find 4.Print 5.Exit
+Enter the choice for operations
+5
